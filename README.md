@@ -11,7 +11,7 @@ Each app installs into the user’s HOME directory (`~/.chimo-apps/`) with its o
 ## 📂 Repository Structure
 
 ```
-chx-repo/
+chx/
 ├── README.md              # Documentation for developers and users
 ├── manager/               # The CHX Manager script
 │   └── chx
@@ -31,7 +31,7 @@ chx-repo/
 Clone the repository and copy the manager script:
 
 ```bash
-git clone https://github.com/yourname/chx-repo.git
+git clone https://github.com/yourname/chx.git
 cd chx-repo/manager
 sudo cp chx /usr/local/bin/chx
 sudo chmod +x /usr/local/bin/chx
