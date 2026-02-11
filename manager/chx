@@ -17,7 +17,7 @@ case "$CMD" in
     mkdir -p "$DEST"
     tar -xzf "$PKG" -C "$DEST"
 
-    # Auto‑fix duplicate folder structure
+    # Auto-fix duplicate folder structure
     INNER="$DEST/$APPNAME"
     if [ -d "$INNER/src" ]; then
       echo "⚠️ Fixing duplicate folder structure..."
@@ -99,10 +99,28 @@ Categories=System;Utility;
 EOF
     sudo update-desktop-database /usr/share/applications
 
-    echo "✅ Global registration complete. Double‑click any .chx file to install."
+    echo "✅ Global registration complete. Double-click any .chx file to install."
+    ;;
+
+  pack)
+    if [ -z "$PKG" ]; then
+      echo "Usage: chx pack <app-folder> -o <output.chx>"
+      exit 1
+    fi
+
+    OUTFILE=""
+    if [ "$3" = "-o" ] && [ -n "$4" ]; then
+      OUTFILE="$4"
+    else
+      OUTFILE="${PKG}.chx"
+    fi
+
+    echo "📦 Packing $PKG into $OUTFILE..."
+    tar -czf "$OUTFILE" "$PKG"
+    echo "✅ Package created: $OUTFILE"
     ;;
 
   *)
-    echo "Usage: chx <install|remove|register-global> <package.chx|appname>"
+    echo "Usage: chx <install|remove|register-global|pack> <package.chx|appname|app-folder>"
     ;;
 esac
