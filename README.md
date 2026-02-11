@@ -1,9 +1,6 @@
-# CHX
-CHX Repository and Things of Chimo Cinder and Chimo Versions above
-
 ---
 
-# 📦 CHX Apps – Developer Guide
+# 📦 CHX Repo
 
 ## 🚀 What is CHX?
 CHX is a packaging format for **Chimo Linux** that makes distributing applications simple, portable, and user-friendly.  
@@ -11,94 +8,106 @@ Each app installs into the user’s HOME directory (`~/.chimo-apps/`) with its o
 
 ---
 
-## 📂 App Structure
-
-A CHX app should follow this layout:
+## 📂 Repository Structure
 
 ```
-my-app/
-├── src/
-│   └── main.py
-├── assets/
-│   └── icon.png
-├── requirements.txt
-```
-
-- **src/main.py** → main application code.  
-- **assets/icon.png** → application icon for the menu.  
-- **requirements.txt** → Python dependencies (e.g., `PyQt6`, `PyQt6-WebEngine`).  
-
----
-
-## 📝 Example `main.py`
-
-```python
-import sys
-from PyQt6.QtWidgets import QApplication, QLabel
-
-app = QApplication(sys.argv)
-window = QLabel("Hello from CHX!")
-window.resize(400, 200)
-window.show()
-sys.exit(app.exec())
+chx-repo/
+├── README.md              # Documentation for developers and users
+├── manager/               # The CHX Manager script
+│   └── chx
+├── apps/                  # Example CHX apps
+│   ├── hello-world.chx
+│   └── browser.chx
+├── docs/                  # Guides and tutorials
+│   ├── packaging.md
+│   └── usage.md
+└── LICENSE
 ```
 
 ---
 
-## 📦 Packaging
+## 🛠️ Installing CHX Manager
 
-From the app’s root directory:
+Clone the repository and copy the manager script:
 
 ```bash
-chx pack my-app -o my-app.chx
+git clone https://github.com/yourname/chx-repo.git
+cd chx-repo/manager
+sudo cp chx /usr/local/bin/chx
+sudo chmod +x /usr/local/bin/chx
 ```
 
-This generates `my-app.chx`, ready for installation.
+Dependencies required:
+- `python3`
+- `python3-venv`
+- `python3-pip`
+- `kdialog`
+- `tar`
 
 ---
 
-## 📥 Installation
+## 📖 Usage
 
+```
+chx install <package.chx>      # Install an app
+chx remove <appname>           # Remove an app
+chx register-global            # Register MIME and global installer
+chx pack <app-folder> -o file  # Package a folder into .chx
+```
+
+---
+
+## 📥 Example Apps
+
+### Hello World
 ```bash
-chx install my-app.chx
+chx install apps/hello-world.chx
 ```
 
-The CHX Manager will:
-- Extract the package into `~/.chimo-apps/my-app/`.  
-- Automatically fix duplicate folder structures if present.  
-- Create a Python virtual environment.  
-- Install dependencies from `requirements.txt`.  
-- Generate a `.desktop` shortcut in the system menu.  
-
----
-
-## 🗑️ Removal
-
+### Browser
 ```bash
-chx remove my-app
+chx install apps/browser.chx
 ```
 
-This deletes the app folder and its desktop shortcut.
+Both apps will appear in your system menu after installation.
 
 ---
 
-## 🌍 Global Registration (Optional)
+## 📦 Creating Your Own CHX App
 
-To allow any user on the system to open `.chx` files with a double click:
+1. Create a folder with this structure:
+   ```
+   my-app/
+   ├── src/main.py
+   ├── assets/icon.png
+   └── requirements.txt
+   ```
+2. Package it:
+   ```bash
+   chx pack my-app -o my-app.chx
+   ```
+3. Install it:
+   ```bash
+   chx install my-app.chx
+   ```
+
+---
+
+## 🌍 Global Registration
+
+To enable double-click installation of `.chx` files:
 
 ```bash
 sudo chx register-global
 ```
 
-This will:
-- Register the MIME type `application/x-chimo`.  
-- Install a global `.desktop` entry for the CHX Installer.  
+This registers the MIME type and adds a global installer entry.
 
 ---
 
 ## ✅ Best Practices
 
-- Use simple, unique names for the root folder (`my-app`).  
+- Use unique names for your app folder.  
 - Always include an icon in `assets/icon.png`.  
 - Keep `requirements.txt` updated.  
 - Test your app before packaging:  
@@ -108,20 +117,10 @@ This will:
 
 ---
 
-## 📖 Example Workflow
+## 📖 Documentation
 
-1. Create your app folder with `src/`, `assets/`, and `requirements.txt`.  
-2. Write your app code in `src/main.py`.  
-3. Package it:  
-   ```bash
-   chx pack my-app -o my-app.chx
-   ```  
-4. Install it locally:  
-   ```bash
-   chx install my-app.chx
-   ```  
-5. Launch it from the KDE/GNOME menu.  
+See the `docs/` folder for:
+- `packaging.md` → How to package apps.  
+- `usage.md` → Detailed usage guide.  
 
 ---
-
-This README gives developers a clear path to build and distribute CHX apps.  
