@@ -31,8 +31,8 @@ chx/
 Clone the repository and copy the manager script:
 
 ```bash
-git clone https://github.com/yourname/chx.git
-cd chx-repo/manager
+git clone https://github.com/chimoinc/chx.git
+cd chx/manager
 sudo cp chx /usr/local/bin/chx
 sudo chmod +x /usr/local/bin/chx
 ```
