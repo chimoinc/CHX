@@ -1,126 +1,91 @@
----
+Markdown
 
-# 📦 CHX Repo
+# 📦 CHX: The Chimo Linux Package Manager
 
-## 🚀 What is CHX?
-CHX is a packaging format for **Chimo Linux** that makes distributing applications simple, portable, and user-friendly.  
-Each app installs into the user’s HOME directory (`~/.chimo-apps/`) with its own Python virtual environment and a desktop shortcut in the system menu.
+**CHX** is a robust, portable packaging format for **Chimo Linux**. Each app installs into `~/.chimo-apps/`, creating an isolated environment with its own **Python virtual environment** (`venv`) and system-level dependencies.
 
 ---
 
-## 📂 Repository Structure
+## 📂 Project Structure
 
-```
-chx/
-├── README.md              # Documentation for developers and users
-├── manager/               # The CHX Manager script
-│   └── chx
-├── apps/                  # Example CHX apps
-│   ├── hello-world.chx
-│   └── browser.chx
-├── docs/                  # Guides and tutorials
-│   ├── packaging.md
-│   └── usage.md
-└── LICENSE
-```
+A professional CHX-compatible application must follow this structure:
 
----
+```text
+my-app/
+├── src/
+│   └── main.py            # Entry point
+├── assets/                # Icons, sounds, images
+├── manifest.json          # Metadata and dependency specs
+└── requirements.txt       # Python PIP dependencies
 
-## 🛠️ Installing CHX Manager
+🛠️ The manifest.json Standard
 
-Clone the repository and copy the manager script:
+This file is mandatory for chx to manage your app's environment automatically.
+JSON
 
-```bash
-git clone https://github.com/chimoinc/chx.git
+{
+  "name": "AppName",
+  "version": "0.1.0",
+  "entry_point": "src/main.py",
+  "sys_dependencies": ["espeak-ng", "clamav"],
+  "pip_dependencies": ["PyQt6", "pyclamd"]
+}
+
+🚀 Creating Your Own CHX App
+
+    Setup your project:
+    Organize your files following the structure above.
+
+    Define dependencies:
+    List your Python libraries in requirements.txt and system tools in manifest.json.
+
+    Package it:
+
+Bash
+
+   chx pack my-app -o my-app.chx
+
+    Install it:
+
+Bash
+
+   chx install my-app.chx
+
+The manager will automatically create a venv, install PIP packages, and set up your system launcher.
+📖 Usage Reference
+Command	Description
+chx install <pkg.chx>	Installs app, setups venv, and resolves dependencies.
+chx remove <appname>	Removes the app and purges its isolated environment.
+chx pack <folder>	Compresses your project into a .chx file.
+chx register-global	Registers MIME types for double-click installations.
+⚙️ Installing CHX Manager
+Bash
+
+git clone [https://github.com/chimoinc/chx.git](https://github.com/chimoinc/chx.git)
 cd chx/manager
 sudo cp chx /usr/local/bin/chx
 sudo chmod +x /usr/local/bin/chx
-```
 
-Dependencies required:
-- `python3`
-- `python3-venv`
-- `python3-pip`
-- `kdialog`
-- `tar`
+Required System Dependencies:
 
----
+    python3, python3-venv, python3-pip
 
-## 📖 Usage
+    kdialog
 
-```
-chx install <package.chx>      # Install an app
-chx remove <appname>           # Remove an app
-chx register-global            # Register MIME and global installer
-chx pack <app-folder> -o file  # Package a folder into .chx
-```
+    tar
 
----
+✅ Best Practices
 
-## 📥 Example Apps
+    Isolation: Always rely on requirements.txt and manifest.json so your app remains portable.
 
-### Hello World
-```bash
-chx install apps/hello-world.chx
-```
+    Assets: Include an assets/icon.png so the manager can generate a desktop shortcut.
 
-### Browser
-```bash
-chx install apps/browser.chx
-```
+    Testing: Always test your app locally with: python3 src/main.py before packaging.
 
-Both apps will appear in your system menu after installation.
+📖 Documentation
 
----
+See the docs/ folder for:
 
-## 📦 Creating Your Own CHX App
+    packaging.md → Advanced manifest configurations.
 
-1. Create a folder with this structure:
-   ```
-   my-app/
-   ├── src/main.py
-   ├── assets/icon.png
-   └── requirements.txt
-   ```
-2. Package it:
-   ```bash
-   chx pack my-app -o my-app.chx
-   ```
-3. Install it:
-   ```bash
-   chx install my-app.chx
-   ```
-
----
-
-## 🌍 Global Registration
-
-To enable double-click installation of `.chx` files:
-
-```bash
-sudo chx register-global
-```
-
-This registers the MIME type and adds a global installer entry.
-
----
-
-## ✅ Best Practices
-
-- Use unique names for your app folder.  
-- Always include an icon in `assets/icon.png`.  
-- Keep `requirements.txt` updated.  
-- Test your app before packaging:  
-  ```bash
-  python3 src/main.py
-  ```
-
----
-
-## 📖 Documentation
-
-See the `docs/` folder for:
-- `packaging.md` → How to package apps.  
-- `usage.md` → Detailed usage guide.  
-
----
+    usage.md → Detailed installation and troubleshooting guide.
